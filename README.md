@@ -1,50 +1,32 @@
-# React + TypeScript + Vite
+# 像素绘画工具
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+这是一个基于 React 和 TypeScript 构建的像素绘画工具。用户可以使用该工具进行简单的像素艺术创作。
 
-Currently, two official plugins are available:
+## 功能特性
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **自定义画布大小**：可以选择不同的画布尺寸。
+- **多种颜色选择**：提供丰富的调色板。
+- **撤销与重做**：支持撤销和重做操作，方便修改。
+- **保存与加载**：可以保存画作并在以后加载。
 
-## Expanding the ESLint configuration
+## 技术栈
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **React**：用于构建用户界面。
+- **TypeScript**：为 JavaScript 提供类型支持。
+- **CSS Modules**：用于样式管理。
 
-- Configure the top-level `parserOptions` property like this:
+## 安装和运行
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+1. 克隆仓库：
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+   ```bash
+   git clone https://github.com/KexQiu/PixelPaint.git
+   cd PixelPaint
+   ```
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+2. 安装依赖：
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+  ```bash
+    pnpm install
+  ```
+
