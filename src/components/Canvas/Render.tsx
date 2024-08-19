@@ -3,7 +3,7 @@ import usePixi from '@/hooks/usePixi';
 import useColorsMatrix from '@/hooks/useColorsMatrix';
 import Mask from './Mask';
 import parseColor from '@/utils/parseColor';
-
+import { download } from '@/utils/download';
 import type { Config } from '@/types';
 import usePaint from '@/hooks/usePaint';
 import { useKeyPress } from 'ahooks';
@@ -15,7 +15,7 @@ const pickColors = ['#000', '#fff'];
 const Render: FC = () => {
   const renderRef = useRef<HTMLDivElement | null>(null);
 
-  const { app, changeScale, exportImage } = usePixi(renderRef, config);
+  const { app, changeScale } = usePixi(renderRef, config);
   const { setOperColor, mergeToMain, undo, redo } = useColorsMatrix(config);
   const { calcPath, calcCoordinateInView, clearPrevCoordinate } =
     usePaint(config);
@@ -23,7 +23,7 @@ const Render: FC = () => {
   const onMaskMouseMove = (event: MouseEvent) => {
     if (!app) return;
 
-    const {clientX, clientY} = event
+    const { clientX, clientY } = event;
 
     const coordinate = calcCoordinateInView(clientX, clientY, app);
     if (!coordinate) return;
@@ -75,7 +75,7 @@ const Render: FC = () => {
     mergeToMain();
   };
 
-    // 快捷键
+  // 快捷键
   // 判断系统
   const isMac = useMemo(() => {
     return /macintosh|mac os x/i.test(navigator.userAgent);
@@ -85,9 +85,10 @@ const Render: FC = () => {
     exactMatch: true,
   });
   useKeyPress([isMac ? 'meta.shift.z' : 'ctrl.shift.z'], redo);
-  useKeyPress([isMac ? 'meta.s' : 'ctrl.s'], (event) => {
+  useKeyPress([isMac ? 'meta.s' : 'ctrl.s'], event => {
     event.preventDefault();
-    exportImage();
+    if (!app) return;
+    download(app);
   });
 
   return (

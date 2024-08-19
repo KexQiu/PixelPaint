@@ -1,6 +1,14 @@
 // uno.config.ts
-import { defineConfig } from 'unocss'
+import { defineConfig, presetUno, presetIcons } from 'unocss';
 
 export default defineConfig({
-  // ...UnoCSS options
-})
+  presets: [
+    presetIcons({
+      extraProperties: {
+        display: 'inline-block',
+        'vertical-align': 'middle',
+      },
+    }),
+    presetUno(),
+  ],
+});

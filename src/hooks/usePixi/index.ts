@@ -6,16 +6,14 @@ import useColorsMatrix from '@/hooks/useColorsMatrix';
 import { useDebounceFn } from 'ahooks';
 
 import { renderMatrix } from './utils';
-
-interface MyApplication extends Application<ICanvas> {
-  wrapNode: HTMLDivElement;
-}
+import { useAtom } from 'jotai';
+import { appAtom } from '@/states';
 
 export default function usePixi(
   containerRef: React.MutableRefObject<HTMLDivElement | null>,
   config: Config
 ) {
-  const [app, setApp] = useState<MyApplication>();
+  const [app, setApp] = useAtom(appAtom);
 
   // 定义色彩矩阵
   const backgroundContainer = useRef<Container>();
@@ -40,8 +38,11 @@ export default function usePixi(
     }
 
     const bgContainer = new Container();
+    bgContainer.name = 'backgroundContainer';
     const container = new Container();
+    container.name = 'mainContainer';
     const oContainer = new Container();
+    oContainer.name = 'operationContainer';
     const pixelArray = [];
     const operPixelArray = [];
     const colors = [];
@@ -146,7 +147,7 @@ export default function usePixi(
       width: width * quality,
       height: height * quality,
       backgroundColor: '#ffffff',
-    }) as MyApplication;
+    });
 
     const view = app.view as HTMLCanvasElement;
 
@@ -186,16 +187,5 @@ export default function usePixi(
     view.style.transform = `scale(${scaleValue})`;
   }, [app, scaleOrigin, scaleValue]);
 
-  const exportImage = async () => {
-    if (!mainContainer.current || !app) return;
-    const image = await app.renderer.plugins.extract.image(mainContainer.current); // 从容器中提取图像
-    
-    const link = document.createElement('a');
-    link.href = image.src; // 获取图像的 src
-    link.download = 'container-image.png'; // 设置下载文件名
-    link.click(); // 触发下载
-  }
-
-
-  return { app, changeScale, exportImage };
+  return { app, changeScale };
 }
