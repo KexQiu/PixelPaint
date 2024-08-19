@@ -1,8 +1,9 @@
-import { type FC, type ComponentProps, useCallback } from 'react';
+import { type FC, type ComponentProps, useCallback, useEffect } from 'react';
 import cls from 'classnames';
 import { useAtomValue } from 'jotai';
 import { appAtom } from '@/states';
 import { download } from '@/utils/download';
+import OptionsModal from '@/components/OptionsModal';
 
 export const Header: FC<ComponentProps<'header'>> = ({
   className,
@@ -15,6 +16,11 @@ export const Header: FC<ComponentProps<'header'>> = ({
     download(app);
   }, [app]);
 
+  useEffect(() => {
+    OptionsModal.open();
+  }, []);
+
+
   return (
     <header
       {...restProps}
@@ -23,7 +29,6 @@ export const Header: FC<ComponentProps<'header'>> = ({
         className
       )}
     >
-      <div></div>
       <button
         onClick={handleDownload}
         className="flex items-center gap-2 cursor-pointer border-none bg-transparent text-inherit hover:bg-#444 rounded-md px-4 py-2"

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Application, Container, Graphics, type ICanvas } from 'pixi.js';
+import { Application, Container, Graphics } from 'pixi.js';
 
 import type { Config } from '@/types';
 import useColorsMatrix from '@/hooks/useColorsMatrix';

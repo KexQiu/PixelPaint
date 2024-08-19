@@ -13,18 +13,24 @@ export const Mask: FC<MaskProps> = ({ onMouseMove, onScaleChange, onOneStepDown 
   const isMouseDown = useRef<boolean>(false);
   useEventListener('mousedown', event => {
     event.stopPropagation();
-    onMouseMove(event);
-    isMouseDown.current = true;
+    if (event.target === maskRef.current) {
+      onMouseMove(event);
+      isMouseDown.current = true;
+    }
   });
   useEventListener('mouseup', event => {
     event.stopPropagation();
-    isMouseDown.current = false;
-    onOneStepDown()
+    if (event.target === maskRef.current) {
+      isMouseDown.current = false;
+      onOneStepDown();
+    }
   });
   useEventListener('mousemove', event => {
     event.stopPropagation();
-    if (!isMouseDown.current) return;
-    onMouseMove(event);
+    if (event.target === maskRef.current) {
+      if (!isMouseDown.current) return;
+      onMouseMove(event);
+    }
   });
 
   const isPressCtrl = useRef<boolean>(false);

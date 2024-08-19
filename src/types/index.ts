@@ -6,6 +6,8 @@ export interface Config {
   quality: number;
 }
 
+export type ColorConfig = [ColorResult, ColorResult];
+
 export interface ColorResult {
   color: number;
   alpha: number;
