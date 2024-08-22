@@ -36,7 +36,7 @@ export const Model: FC<ModelProps> = ({ title, children, open, onCancel }) => {
           className="absolute top-3 right-3 p-1 rounded bg-transparent border-none z-2 hover:bg-#444 text-white cursor-pointer"
           onClick={onCancel}
         >
-          <i className="i-tabler:x text-2xl" />
+          <i className="i-pixelarticons:close text-2xl" />
         </button>
       </div>
     </div>,

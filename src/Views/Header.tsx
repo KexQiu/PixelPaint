@@ -31,9 +31,9 @@ export const Header: FC<ComponentProps<'header'>> = ({
     >
       <button
         onClick={handleDownload}
-        className="flex items-center gap-2 cursor-pointer border-none bg-transparent text-inherit hover:bg-#444 rounded-md px-4 py-2"
+        className="flex items-center gap-2 cursor-pointer border-none bg-transparent text-inherit hover:bg-#444 rounded-md px-4 py-2 text-lg"
       >
-        <i className="i-tabler:download text-xl" />
+        <i className="i-pixelarticons:arrow-bar-down text-2xl" />
         <span>download</span>
       </button>
     </header>

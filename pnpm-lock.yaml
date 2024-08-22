@@ -36,9 +36,9 @@ importers:
       '@eslint/js':
         specifier: ^9.8.0
         version: 9.9.0
-      '@iconify-json/tabler':
-        specifier: ^1.1.120
-        version: 1.1.120
+      '@iconify-json/pixelarticons':
+        specifier: ^1.1.13
+        version: 1.1.13
       '@types/lodash':
         specifier: ^4.17.7
         version: 4.17.7
@@ -591,8 +591,8 @@ packages:
     resolution: {integrity: sha512-d2CGZR2o7fS6sWB7DG/3a95bGKQyHMACZ5aW8qGkkqQpUoZV6C0X7Pc7l4ZNMZkfNBf4VWNe9E1jRsf0G146Ew==}
     engines: {node: '>=18.18'}
 
-  '@iconify-json/tabler@1.1.120':
-    resolution: {integrity: sha512-G9of3jPsYUfFkdaeqfILQF3xkCuZeitqJDjMkqmzjfJcWzl7JW/PoPJRby28dIUHTyO6eLqOlKhFP4/EQCg44Q==}
+  '@iconify-json/pixelarticons@1.1.13':
+    resolution: {integrity: sha512-Sl2dIKHsFicomoCdTYd1OcWZ+xkmSFp0ymhQONetR23nft2Yi5ClK1uDvs08ZYAER/2ToL+uQ0h7t1xYzLjPsA==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -2859,7 +2859,7 @@ snapshots:
 
   '@humanwhocodes/retry@0.3.0': {}
 
-  '@iconify-json/tabler@1.1.120':
+  '@iconify-json/pixelarticons@1.1.13':
     dependencies:
       '@iconify/types': 2.0.0
 
