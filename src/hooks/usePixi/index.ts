@@ -15,6 +15,9 @@ export default function usePixi(
 ) {
   const [app, setApp] = useAtom(appAtom);
 
+  // 初始缩放值
+  const initialScaleValue = useRef<number>();
+
   // 定义色彩矩阵
   const backgroundContainer = useRef<Container>();
   const mainContainer = useRef<Container>();
@@ -106,12 +109,12 @@ export default function usePixi(
   useEffect(() => {
     if (operMatrix && operPixels.current)
       renderMatrix(operMatrix, operPixels!.current, config);
-  }, [operMatrix, config]);
+  }, [operMatrix]);
   // 监听颜色矩阵进行绘制
   useEffect(() => {
     if (colorMatrix && pixels.current)
       renderMatrix(colorMatrix, pixels!.current, config);
-  }, [colorMatrix, config]);
+  }, [colorMatrix]);
 
   // 缩放
   const [scaleValue, setScaleValue] = useState(1);
@@ -137,6 +140,13 @@ export default function usePixi(
       originY,
     });
   };
+  const resetScale = () => {
+    setScaleValue(initialScaleValue.current!);
+    deBounceSetScaleOrigin({
+      originX: '50%',
+      originY: '50%',
+    });
+  };
 
   // 初始化画布
   useEffect(() => {
@@ -153,11 +163,12 @@ export default function usePixi(
 
     const { height: containerHeight, width: containerWidth } =
       containerRef.current.getBoundingClientRect();
-    const initialScaleValue = Math.min(
+    const ScaleValue = Math.min(
       (containerHeight * 0.8) / (height * quality),
       (containerWidth * 0.8) / (width * quality)
     );
-    setScaleValue(initialScaleValue);
+    setScaleValue(ScaleValue);
+    initialScaleValue.current = ScaleValue;
 
     containerRef.current?.appendChild(view);
 
@@ -187,5 +198,5 @@ export default function usePixi(
     view.style.transform = `scale(${scaleValue})`;
   }, [app, scaleOrigin, scaleValue]);
 
-  return { app, changeScale };
+  return { app, changeScale, resetScale };
 }

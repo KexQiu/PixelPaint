@@ -1,14 +1,16 @@
-import { type FC, type ComponentProps, useCallback, useEffect } from 'react';
+import { type FC, type ComponentProps, useCallback } from 'react';
 import cls from 'classnames';
 import { useAtomValue } from 'jotai';
 import { appAtom } from '@/states';
 import { download } from '@/utils/download';
-import OptionsModal from '@/components/OptionsModal';
+import useConfig from '@/hooks/useConfig';
+import useColorsMatrix from '@/hooks/useColorsMatrix';
 
 export const Header: FC<ComponentProps<'header'>> = ({
   className,
   ...restProps
 }) => {
+  const {config} = useConfig();
   const app = useAtomValue(appAtom);
 
   const handleDownload = useCallback(() => {
@@ -16,10 +18,7 @@ export const Header: FC<ComponentProps<'header'>> = ({
     download(app);
   }, [app]);
 
-  useEffect(() => {
-    OptionsModal.open();
-  }, []);
-
+  const { showOptionsModal } = useConfig();
 
   return (
     <header
@@ -29,12 +28,23 @@ export const Header: FC<ComponentProps<'header'>> = ({
         className
       )}
     >
+      <div className="left-oper-btns">
+        <button
+          className="flex items-center gap-2 cursor-pointer border-none bg-transparent text-inherit hover:bg-#444 rounded-md px-4 py-2 text-lg"
+          onClick={() => {
+            showOptionsModal();
+          }}
+        >
+          <i className="i-pixelarticons:image text-2xl" />
+          <span>New</span>
+        </button>
+      </div>
       <button
         onClick={handleDownload}
         className="flex items-center gap-2 cursor-pointer border-none bg-transparent text-inherit hover:bg-#444 rounded-md px-4 py-2 text-lg"
       >
         <i className="i-pixelarticons:arrow-bar-down text-2xl" />
-        <span>download</span>
+        <span>Download</span>
       </button>
     </header>
   );

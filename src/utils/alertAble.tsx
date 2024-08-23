@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import { createRoot } from 'react-dom/client';
 
 interface Config<T> {
@@ -8,7 +8,7 @@ interface Config<T> {
   onOk?: () => void;
 }
 
-export default function alertAble<T extends Record<string, unknown>>(
+export default function alertAble<T extends Record<string, any>>(
   FcComponent: React.ComponentType<T> & {
     open?: (props?: Partial<T>, config?: Config<T>) => void;
     close?: () => void;

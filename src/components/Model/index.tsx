@@ -13,9 +13,6 @@ interface ModelProps {
 export const Model: FC<ModelProps> = ({ title, children, open, onCancel }) => {
   const [visible, setVisible] = useState(open);
 
-  console.log(open);
-  
-
   useEffect(() => {
     setVisible(open);
   }, [open]);
