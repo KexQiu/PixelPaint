@@ -1,10 +1,13 @@
 import { useAtom } from 'jotai';
 import { colorMatrixAtom, operMatrixAtom, colorHistory } from '@/states';
 import { useMemo } from 'react';
-import type { Config, ColorResult } from '@/types';
+import type { ColorResult } from '@/types';
 import { cloneDeep } from 'lodash';
+import useConfig from '@/hooks/useConfig';
 
-export const useColorsMatrix = (config: Config) => {
+export const useColorsMatrix = () => {
+  const { config } = useConfig();
+
   const [colorMatrix, setColorMatrix] = useAtom(colorMatrixAtom);
   const [operMatrix, setOperMatrix] = useAtom(operMatrixAtom);
   const [history, setColorHistory] = useAtom(colorHistory);

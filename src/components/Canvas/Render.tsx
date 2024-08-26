@@ -17,7 +17,7 @@ const Render: FC = () => {
   const { config } = useConfig();
 
   const { app, changeScale, resetScale } = usePixi(renderRef, config!);
-  const { setOperColor, mergeToMain, undo, redo } = useColorsMatrix(config!);
+  const { setOperColor, mergeToMain, undo, redo } = useColorsMatrix();
   const { calcPath, calcCoordinateInView, clearPrevCoordinate } =
     usePaint(config!);
 
@@ -37,9 +37,6 @@ const Render: FC = () => {
   };
 
   const onScaleChange = (event: WheelEvent) => {
-    console.log('onScaleChange', app);
-    
-    
 
     if (!app) return;
     const mousePosition = {
@@ -107,7 +104,7 @@ const Render: FC = () => {
         className="render w-full h-full flex items-center justify-center relative overflow-auto"
         ref={renderRef}
       ></div>
-      <button className="absolute top-4 right-4 text-white bg-#555 border-none px-2 py-1 rounded text-sm" onClick={resetScale}>
+      <button className="absolute top-4 right-4 text-white bg-#555 border-none px-2 py-1 rounded text-sm z-20 cursor-pointer" onClick={resetScale}>
         <i className='i-pixelarticons:scale' /> Restore
       </button>
     </div>

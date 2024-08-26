@@ -10,7 +10,6 @@ export const Header: FC<ComponentProps<'header'>> = ({
   className,
   ...restProps
 }) => {
-  const {config} = useConfig();
   const app = useAtomValue(appAtom);
 
   const handleDownload = useCallback(() => {
@@ -20,6 +19,8 @@ export const Header: FC<ComponentProps<'header'>> = ({
 
   const { showOptionsModal } = useConfig();
 
+  const { undo, redo } = useColorsMatrix();
+
   return (
     <header
       {...restProps}
@@ -28,7 +29,7 @@ export const Header: FC<ComponentProps<'header'>> = ({
         className
       )}
     >
-      <div className="left-oper-btns">
+      <div className="left-oper-btns flex items-center gap-2">
         <button
           className="flex items-center gap-2 cursor-pointer border-none bg-transparent text-inherit hover:bg-#444 rounded-md px-4 py-2 text-lg"
           onClick={() => {
@@ -37,6 +38,24 @@ export const Header: FC<ComponentProps<'header'>> = ({
         >
           <i className="i-pixelarticons:image text-2xl" />
           <span>New</span>
+        </button>
+        <button
+          className="flex items-center gap-2 cursor-pointer border-none bg-transparent text-inherit hover:bg-#444 rounded-md px-4 py-2 text-lg"
+          onClick={() => {
+            undo();
+          }}
+        >
+          <i className="i-pixelarticons:undo text-2xl" />
+          <span>Undo</span>
+        </button>
+        <button
+          className="flex items-center gap-2 cursor-pointer border-none bg-transparent text-inherit hover:bg-#444 rounded-md px-4 py-2 text-lg"
+          onClick={() => {
+            redo();
+          }}
+        >
+          <i className="i-pixelarticons:redo text-2xl" />
+          <span>Redo</span>
         </button>
       </div>
       <button

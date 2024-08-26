@@ -25,7 +25,7 @@ export default function usePixi(
   const operContainer = useRef<Container>();
   const operPixels = useRef<Array<Array<Graphics>>>();
   const { colorMatrix, initialColorMatrix, operMatrix, setOperMatrix } =
-    useColorsMatrix(config);
+    useColorsMatrix();
 
   useEffect(() => {
     if (!config || !app || !app.view) return;
