@@ -16,6 +16,7 @@
     "jotai": "^2.9.2",
     "pixi.js": "7",
     "react": "^18.3.1",
+    "react-color-palette": "^7.2.2",
     "react-dom": "^18.3.1",
     "sass": "^1.77.8"
   },
