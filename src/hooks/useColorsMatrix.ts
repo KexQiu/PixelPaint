@@ -16,7 +16,15 @@ export const colorHistory = atom<{
   historyArray: History[];
   currentIndex?: number;
 }>({
-  historyArray: [],
+  historyArray: localStorage.getItem('colorMatrix')
+    ? [
+        {
+          matrix: JSON.parse(
+            localStorage.getItem('colorMatrix')!
+          ) as ColorResult[][],
+        },
+      ]
+    : [],
   currentIndex: 0,
 });
 
