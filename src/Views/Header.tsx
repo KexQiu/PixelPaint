@@ -19,7 +19,7 @@ export const Header: FC<ComponentProps<'header'>> = ({
 
   const { showOptionsModal } = useConfig();
 
-  const { undo, redo } = useColorsMatrix();
+  const { undo, redo, canUndo, canRedo } = useColorsMatrix();
 
   return (
     <header
@@ -40,7 +40,11 @@ export const Header: FC<ComponentProps<'header'>> = ({
           <span>New</span>
         </button>
         <button
-          className="flex items-center gap-2 cursor-pointer border-none bg-transparent text-inherit hover:bg-#444 rounded-md px-4 py-2 text-lg"
+          className={cls(
+            'flex items-center gap-2 border-none bg-transparent text-inherit hover:bg-#444 rounded-md px-4 py-2 text-lg',
+            canUndo ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'
+          )}
+          disabled={!canUndo}
           onClick={() => {
             undo();
           }}
@@ -49,7 +53,11 @@ export const Header: FC<ComponentProps<'header'>> = ({
           <span>Undo</span>
         </button>
         <button
-          className="flex items-center gap-2 cursor-pointer border-none bg-transparent text-inherit hover:bg-#444 rounded-md px-4 py-2 text-lg"
+          className={cls(
+            'flex items-center gap-2 border-none bg-transparent text-inherit hover:bg-#444 rounded-md px-4 py-2 text-lg',
+            canRedo ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'
+          )}
+          disabled={!canRedo}
           onClick={() => {
             redo();
           }}

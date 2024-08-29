@@ -1,7 +1,7 @@
 import { Config, ColorResult } from '@/types';
 import { Graphics } from 'pixi.js';
 
-// 绘制到操作层
+// 绘制
 export const renderMatrix = (
   matrix: ColorResult[][],
   pixels: Graphics[][],

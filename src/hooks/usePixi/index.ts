@@ -1,19 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import { Application, Container, Graphics } from 'pixi.js';
 
-import type { Config } from '@/types';
 import useColorsMatrix from '@/hooks/useColorsMatrix';
 import { useDebounceFn } from 'ahooks';
 
 import { renderMatrix } from './utils';
 import { useAtom } from 'jotai';
 import { appAtom } from '@/states';
+import useConfig from '../useConfig';
 
 export default function usePixi(
   containerRef: React.MutableRefObject<HTMLDivElement | null>,
-  config: Config
 ) {
   const [app, setApp] = useAtom(appAtom);
+  const { config } = useConfig();
 
   // 初始缩放值
   const initialScaleValue = useRef<number>();
@@ -24,8 +24,13 @@ export default function usePixi(
   const pixels = useRef<Array<Array<Graphics>>>();
   const operContainer = useRef<Container>();
   const operPixels = useRef<Array<Array<Graphics>>>();
-  const { colorMatrix, initialColorMatrix, operMatrix, setOperMatrix } =
-    useColorsMatrix();
+  const {
+    colorMatrix,
+    initialColorMatrix,
+    operMatrix,
+    setOperMatrix,
+    hasLocal,
+  } = useColorsMatrix();
 
   useEffect(() => {
     if (!config || !app || !app.view) return;
@@ -48,12 +53,12 @@ export default function usePixi(
     oContainer.name = 'operationContainer';
     const pixelArray = [];
     const operPixelArray = [];
-    const colors = [];
+    const colors = hasLocal ? colorMatrix : [];
     // 根据配置进行遍历
     for (let row = 0; row < height; row++) {
       const arr = [];
       const operArr = [];
-      const cArr = [];
+      const cArr = hasLocal ? colorMatrix![row] : [];
       for (let col = 0; col < width; col++) {
         const x = col * quality;
         const y = row * quality;
@@ -69,8 +74,13 @@ export default function usePixi(
         // 主体层
         const pixel = new Graphics();
         // 绘制初始格子
-        cArr.push({ color: 0x000000, alpha: 0 });
-        pixel.beginFill(0x000000, 0);
+        if (hasLocal && colors![row][col]) {
+          pixel.beginFill(colors![row][col].color, colors![row][col].alpha);
+        } else {
+          cArr.push({ color: 0x000000, alpha: 0 });
+          pixel.beginFill(0x000000, 0);
+        }
+
         pixel.drawRect(x, y, quality, quality);
         pixel.endFill();
 
@@ -90,7 +100,7 @@ export default function usePixi(
         operArr.push(operPixel); // 存储格子的引用
       }
       pixelArray.push(arr);
-      colors.push(cArr);
+      if (!hasLocal) colors!.push(cArr);
       operPixelArray.push(operArr);
     }
     app.stage.addChild(bgContainer);
@@ -102,17 +112,17 @@ export default function usePixi(
 
     pixels.current = pixelArray;
     operPixels.current = operPixelArray;
-    initialColorMatrix(colors);
+    if (!hasLocal) initialColorMatrix(colors!);
     setOperMatrix(colors);
   }, [config, app]);
   // 监听操作颜色矩阵进行绘制
   useEffect(() => {
-    if (operMatrix && operPixels.current)
+    if (operMatrix && operPixels.current && config)
       renderMatrix(operMatrix, operPixels!.current, config);
   }, [operMatrix]);
   // 监听颜色矩阵进行绘制
   useEffect(() => {
-    if (colorMatrix && pixels.current)
+    if (colorMatrix && pixels.current && config)
       renderMatrix(colorMatrix, pixels!.current, config);
   }, [colorMatrix]);
 
@@ -150,7 +160,7 @@ export default function usePixi(
 
   // 初始化画布
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || !config) return;
     const { width, height, quality } = config;
 
     const app = new Application({

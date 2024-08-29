@@ -16,7 +16,7 @@ const Render: FC = () => {
 
   const { config } = useConfig();
 
-  const { app, changeScale, resetScale } = usePixi(renderRef, config!);
+  const { app, changeScale, resetScale } = usePixi(renderRef);
   const { setOperColor, mergeToMain, undo, redo } = useColorsMatrix();
   const { calcPath, calcCoordinateInView, clearPrevCoordinate } =
     usePaint(config!);

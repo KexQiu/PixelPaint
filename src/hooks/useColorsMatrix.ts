@@ -1,13 +1,40 @@
-import { useAtom } from 'jotai';
-import { colorMatrixAtom, operMatrixAtom, colorHistory } from '@/states';
+import { useAtom, atom } from 'jotai';
 import { useMemo } from 'react';
 import type { ColorResult } from '@/types';
 import { cloneDeep } from 'lodash';
 import useConfig from '@/hooks/useConfig';
+import { useLocalStorageState } from 'ahooks';
+
+export interface History {
+  matrix: ColorResult[][];
+}
+
+/**
+ * 历史
+ */
+export const colorHistory = atom<{
+  historyArray: History[];
+  currentIndex?: number;
+}>({
+  historyArray: [],
+  currentIndex: 0,
+});
+
+/**
+ * 画板颜色矩阵
+ */
+export const colorMatrixAtom = atom<ColorResult[][] | undefined>(
+  localStorage.getItem('colorMatrix')
+    ? (JSON.parse(localStorage.getItem('colorMatrix')!) as ColorResult[][])
+    : undefined
+);
+export const operMatrixAtom = atom<ColorResult[][]>();
 
 export const useColorsMatrix = () => {
   const { config } = useConfig();
 
+  const [localColorMatrix, setLocalColorMatrix] =
+    useLocalStorageState<ColorResult[][]>('colorMatrix');
   const [colorMatrix, setColorMatrix] = useAtom(colorMatrixAtom);
   const [operMatrix, setOperMatrix] = useAtom(operMatrixAtom);
   const [history, setColorHistory] = useAtom(colorHistory);
@@ -48,6 +75,7 @@ export const useColorsMatrix = () => {
 
   // 撤回
   const undo = () => {
+    if (!history.historyArray.length || history.currentIndex === 0) return;
     history.currentIndex = Math.max(history.currentIndex! - 1, 0);
     setColorMatrix(history.historyArray[history.currentIndex].matrix);
     setColorHistory({
@@ -57,6 +85,11 @@ export const useColorsMatrix = () => {
   };
   // 重做
   const redo = () => {
+    if (
+      !history.historyArray.length ||
+      history.currentIndex === history.historyArray.length - 1
+    )
+      return;
     if (history.currentIndex === history.historyArray.length - 1) {
       return;
     }
@@ -86,6 +119,7 @@ export const useColorsMatrix = () => {
     }
     if (isChange === false) return;
     setColorMatrix(newColorMatrix);
+    setLocalColorMatrix(newColorMatrix);
     clearOperMatrix();
     setHistory(newColorMatrix);
   };
@@ -123,6 +157,11 @@ export const useColorsMatrix = () => {
     mergeToMain,
     undo,
     redo,
+    hasLocal: !!localColorMatrix,
+    canUndo: history.historyArray.length > 0 && history.currentIndex !== 0,
+    canRedo:
+      history.historyArray.length > 0 &&
+      history.currentIndex !== history.historyArray.length - 1,
   };
 };
 
