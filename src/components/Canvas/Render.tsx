@@ -2,18 +2,17 @@ import { useMemo, useRef, type FC } from 'react';
 import usePixi from '@/hooks/usePixi';
 import useColorsMatrix from '@/hooks/useColorsMatrix';
 import Mask from './Mask';
-import parseColor from '@/utils/parseColor';
 import { download } from '@/utils/download';
 import usePaint from '@/hooks/usePaint';
 import { useKeyPress } from 'ahooks';
 import useConfig from '@/hooks/useConfig';
+import useColor from '@/hooks/useColor';
 
 // TODO 预设模拟值 后续做成配置
-const pickColors = ['#000', '#fff'];
 
 const Render: FC = () => {
   const renderRef = useRef<HTMLDivElement | null>(null);
-
+  const { currentColor } = useColor();
   const { config } = useConfig();
 
   const { app, changeScale, resetScale } = usePixi(renderRef);
@@ -32,7 +31,7 @@ const Render: FC = () => {
     const path = calcPath(coordinate);
     path.forEach(([x, y]) => {
         if (x < 0 || y < 0 || x >= config!.width || y >= config!.height) return;
-      setOperColor(x, y, parseColor(pickColors[0]));
+      setOperColor(x, y, currentColor);
     });
   };
 

@@ -55,4 +55,10 @@ export function parseColor(
   return { color, alpha };
 }
 
-export default parseColor;
+export const colorResultToHexString = (color: ColorResult): string => {
+  const hexColor = color.color.toString(16).padStart(6, '0');
+  const alphaHex = Math.round(color.alpha * 255)
+    .toString(16)
+    .padStart(2, '0');
+  return `#${hexColor}${alphaHex}`;
+};
