@@ -1,12 +1,15 @@
 import { CanvasBoard, Header, ToolBar } from './Views';
 import './App.scss';
 import useConfig from '@/hooks/useConfig';
+import { useMount } from 'ahooks';
 
 function App() {
   const { config, showOptionsModal } = useConfig();
-  if (!config) {
-    showOptionsModal();
-  }
+  useMount(() => {
+    if (!config) {
+      showOptionsModal();
+    }
+  });
 
   return (
     <div className="w-full h-screen flex flex-col bg-[#333] text-white">
